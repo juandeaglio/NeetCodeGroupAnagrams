@@ -6,14 +6,16 @@ class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         groups = []
         words_added = {}
-        for word in strs:
+        while strs:
+            word = strs[0]
             if word not in words_added:
-                excluded_word = strs.copy()
-                excluded_word.remove(word)
-                words = self.get_all_anagrams(word, excluded_word)
+                strs.remove(word)
+                words = self.get_all_anagrams(word, strs)
                 groups.append(words)
-                for word in words:
-                    words_added[word] = True
+                for word_to_add in words:
+                    if word_to_add != word and len(strs) > 0:
+                        strs.remove(word_to_add)
+                    words_added[word_to_add] = True
 
         return groups
 
