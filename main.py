@@ -11,8 +11,8 @@ class Solution:
         words_added = {}
         while strs:
             word = strs[0]
+            strs.remove(word)
             if word not in words_added:
-                strs.remove(word)
                 words = self.get_all_anagrams(word, strs)
                 for word_to_add in words:
                     if len(strs) > 0:
@@ -20,9 +20,10 @@ class Solution:
 
                     words_added[word_to_add] = True
 
+                words_added[word] = True
                 words.append(word)
                 groups.append(words)
-                
+
         return groups
 
 
@@ -49,5 +50,8 @@ class Solution:
         for char in other_word:
             total_counts[char] -= 1
 
-        self.memoized_anagrams[other_word] = all(value == 0 for value in total_counts.values())
-        return self.memoized_anagrams[other_word]
+        result = all(value == 0 for value in total_counts.values())
+        if result:
+            self.memoized_anagrams[other_word] = result
+
+        return result

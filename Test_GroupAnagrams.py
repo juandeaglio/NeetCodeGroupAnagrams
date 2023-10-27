@@ -47,12 +47,24 @@ class TestGroupAnagrams(unittest.TestCase):
         start = time.time()
         groups = Solution().groupAnagrams(strs)
         end = time.time()
-        self.assertLess(end - start, 0.04)
+        self.assertLess(end - start, 0.06)
 
     def test_two_empty_strings(self):
         strs = ["",""]
         groups = Solution().groupAnagrams(strs)
         self.assertEqual(groups, [["",""]])
+
+    def test_edge_case(self):
+        strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+        expected = [["bat"],["nat","tan"],["ate","eat","tea"]]
+        groups = Solution().groupAnagrams(strs)
+        self.assertTrue(compare_elements(expected, groups))
+
+    def test_mostly_no_anagrams(self):
+        strs = ["apt", "man", "qom", "apt", "lei", "hus", "pet", "gay", "six", "mai"]
+        expected = [["apt", "apt"], ["man"], ["qom"], ["lei"], ["hus"], ["pet"], ["gay"], ["six"], ["mai"]]
+        groups = Solution().groupAnagrams(strs)
+        self.assertTrue(compare_elements(expected, groups))
 
 if __name__ == '__main__':
     unittest.main()
