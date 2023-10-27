@@ -3,6 +3,9 @@ from typing import List
 
 
 class Solution:
+    def __init__(self):
+        self.memoized_anagrams = {}
+
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         groups = []
         words_added = {}
@@ -11,12 +14,15 @@ class Solution:
             if word not in words_added:
                 strs.remove(word)
                 words = self.get_all_anagrams(word, strs)
-                groups.append(words)
                 for word_to_add in words:
-                    if word_to_add != word and len(strs) > 0:
+                    if len(strs) > 0:
                         strs.remove(word_to_add)
+
                     words_added[word_to_add] = True
 
+                words.append(word)
+                groups.append(words)
+                
         return groups
 
 
@@ -26,12 +32,14 @@ class Solution:
             if self.is_anagram(word, other_word):
                 anagrams.append(other_word)
 
-        anagrams.append(word)
         return anagrams
 
     def is_anagram(self, word, other_word):
         if len(word) != len(other_word):
             return False
+        
+        if other_word in self.memoized_anagrams:
+            return True
 
         total_counts = defaultdict(int)
 
@@ -41,4 +49,5 @@ class Solution:
         for char in other_word:
             total_counts[char] -= 1
 
-        return all(value == 0 for value in total_counts.values())
+        self.memoized_anagrams[other_word] = all(value == 0 for value in total_counts.values())
+        return self.memoized_anagrams[other_word]

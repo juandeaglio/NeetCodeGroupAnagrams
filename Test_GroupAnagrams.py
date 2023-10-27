@@ -47,7 +47,12 @@ class TestGroupAnagrams(unittest.TestCase):
         start = time.time()
         groups = Solution().groupAnagrams(strs)
         end = time.time()
-        self.assertLess(end - start, 0.100)
+        self.assertLess(end - start, 0.04)
+
+    def test_two_empty_strings(self):
+        strs = ["",""]
+        groups = Solution().groupAnagrams(strs)
+        self.assertEqual(groups, [["",""]])
 
 if __name__ == '__main__':
     unittest.main()
